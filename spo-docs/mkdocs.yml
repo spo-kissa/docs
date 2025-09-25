@@ -45,3 +45,6 @@ nav:
   - 'ホーム':
     - 'スタートガイド': index.md
     - 'エアギャップ作成': airgap/index.md
+    - 'Windowsの場合':
+      - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
+      - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
