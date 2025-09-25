@@ -1,0 +1,47 @@
+site_name: SPO-Kissa Documentation
+site_url: https://spo-kissa.org
+theme:
+  name: material
+  language: ja
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      primary: brown
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: brown
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  logo: assets/logo.png
+  favicon: assets/favicon.png
+  icon:
+    repo: fontawesome/brands/github
+  features:
+    - content.tabs.link
+    - navigation.tabs
+    - search.suggest
+    - search.highlight
+    - search.share
+extra:
+  alternate:
+    - name: English
+      link: /en/
+      lang: en
+  homepage: https://spo-kissa.org
+  generator: false
+copyright: Copyright &copy; 2025 SPO Kissa.
+repo_url: https://github.com/spo-kissa/spodocs
+repo_name: spo-kissa/spodocs
+markdown_extensions:
+  - toc:
+      permalink: true
+  - admonition
+  - footnotes
+  - attr_list
+nav:
+  - 'ホーム':
+    - 'スタートガイド': index.md
+    - 'エアギャップ作成': airgap/index.md
