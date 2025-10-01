@@ -48,3 +48,7 @@ nav:
     - 'Windowsの場合':
       - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
       - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
+    - 'マニュアルの書き方':
+      - 'VSCode の入手とインストール': manual/01-vscode-installation.md
+      - 'リポジトリのクローン': manual/02-clone-repository.md
+      - 'マニュアルの編集': manual/03-edit-manual.md
