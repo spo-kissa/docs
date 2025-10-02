@@ -14,7 +14,7 @@ WORKDIR /docs
 COPY spo-docs/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./spodocs .
+COPY ./spo-docs .
 
 EXPOSE 8000
 
