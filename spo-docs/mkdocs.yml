@@ -21,7 +21,14 @@ theme:
     repo: fontawesome/brands/github
   features:
     - content.tabs.link
+    - content.code.copy
+    - content.code.select
+    - content.code.annotate
     - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
     - search.suggest
     - search.highlight
     - search.share
@@ -33,12 +40,21 @@ extra:
   homepage: https://spo-kissa.org
   generator: false
 copyright: Copyright &copy; 2025 SPO Kissa.
-repo_url: https://github.com/spo-kissa/spodocs
-repo_name: spo-kissa/spodocs
+repo_url: https://github.com/spo-kissa/docs
+repo_name: spo-kissa/docs
 markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      use_pygments: true
+      noclasses: true
+      pygments_style: monokai
+      linenums: false
   - toc:
       permalink: true
-  - admonition
   - footnotes
   - attr_list
 nav:
@@ -48,7 +64,12 @@ nav:
     - 'Windowsの場合':
       - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
       - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
-    - 'マニュアルの書き方':
-      - 'VSCode の入手とインストール': manual/01-vscode-installation.md
-      - 'リポジトリのクローン': manual/02-clone-repository.md
-      - 'マニュアルの編集': manual/03-edit-manual.md
+  - 'マニュアルの書き方':
+    - 'VSCode の入手とインストール': manual/01-vscode-installation.md
+    - 'リポジトリのクローン': manual/02-clone-repository.md
+    - 'マニュアルの編集': manual/03-write-manual.md
+    - 'プルリクエストの作成': manual/04-create-pull-request.md
+  - 'このサイトについて':
+    - 'SPO-Kissaについて': about/spo-kissa.md
+    - '寄稿者': about/contributors.md
+    - 'ライセンス': about/license.md
