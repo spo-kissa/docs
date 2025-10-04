@@ -2,4 +2,7 @@ mkdocs>=1.6
 mkdocs-material>=9.5
 mkdocs-mermaid2-plugin
 mkdocs-static-i18n
+fontawesome-markdown
+mdx_unimoji
+pymdown-markdown-math
 pymdown-extensions
