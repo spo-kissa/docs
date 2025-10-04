@@ -1,0 +1,14 @@
+services:
+  mkdocs:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mkdocs
+    container_name: mkdocs
+    volumes:
+      - ${PWD}:/docs
+    working_dir: /docs
+    tty: true
+    command: /bin/bash
+    ports:
+      - 8000:8000

@@ -1,4 +1,22 @@
+nav:
+  - 'ホーム':
+    - 'スタートガイド': index.md
+    - 'エアギャップ作成': airgap/index.md
+    - 'Windowsの場合':
+      - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
+      - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
+  - 'マニュアルの書き方':
+    - 'VSCode の入手とインストール': manual/01-vscode-installation.md
+    - 'リポジトリのクローン': manual/02-clone-repository.md
+    - 'マニュアルの編集': manual/03-write-manual.md
+    - 'プルリクエストの作成': manual/04-create-pull-request.md
+  - 'このサイトについて':
+    - 'SPO-Kissaについて': about/spo-kissa.md
+    - '寄稿者': about/contributors.md
+    - 'ライセンス': about/license.md
+
 site_name: SPO-Kissa Documentation
+docs_dir: docs
 site_url: https://spo-kissa.org
 theme:
   name: material
@@ -29,10 +47,21 @@ theme:
     - navigation.expand
     - navigation.indexes
     - navigation.top
+    - navigation.tracking
+    - navigation.instant
+    - navigation.footer
+    - navigation.path
     - search.suggest
     - search.highlight
     - search.share
 extra:
+  social:
+    - icon: fontawesome/brands/discord
+      link: https://discord.gg/w7DYV3mSQb
+    - icon: fontawesome/brands/twitter
+      link: https://x.com/SpoKissa
+    - icon: fontawesome/brands/github
+      link: https://github.com/spo-kissa
   alternate:
     - name: English
       link: /en/
@@ -57,19 +86,3 @@ markdown_extensions:
       permalink: true
   - footnotes
   - attr_list
-nav:
-  - 'ホーム':
-    - 'スタートガイド': index.md
-    - 'エアギャップ作成': airgap/index.md
-    - 'Windowsの場合':
-      - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
-      - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
-  - 'マニュアルの書き方':
-    - 'VSCode の入手とインストール': manual/01-vscode-installation.md
-    - 'リポジトリのクローン': manual/02-clone-repository.md
-    - 'マニュアルの編集': manual/03-write-manual.md
-    - 'プルリクエストの作成': manual/04-create-pull-request.md
-  - 'このサイトについて':
-    - 'SPO-Kissaについて': about/spo-kissa.md
-    - '寄稿者': about/contributors.md
-    - 'ライセンス': about/license.md
