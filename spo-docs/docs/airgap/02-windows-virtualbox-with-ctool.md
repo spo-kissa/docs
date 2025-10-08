@@ -17,7 +17,6 @@ title: WindowsでVirtualBox with ctoolの環境構築
 | ubuntu-22.04.5-desktop-amd64.iso |
 
 
-
 ## 2. VirtualBox の入手
 
 - [Oracle VirtualBox 7.2.2 の入手](https://www.virtualbox.org/wiki/Downloads)

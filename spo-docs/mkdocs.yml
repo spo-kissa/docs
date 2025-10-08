@@ -1,10 +1,15 @@
 nav:
   - 'ホーム':
     - 'スタートガイド': index.md
+    - 'Midnight':
+      - 'Preview Node の構築': midnight/01-preview-node.md
+      - 'ノードインストール': midnight/02-install-preview-node.md
+      - 'midnight-node の構築': midnight/05-midnight-node.md
     - 'エアギャップ作成': airgap/index.md
     - 'Windowsの場合':
       - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
       - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
+
   - 'マニュアルの書き方':
     - 'VSCode の入手とインストール': manual/01-vscode-installation.md
     - 'リポジトリのクローン': manual/02-clone-repository.md
@@ -15,11 +20,9 @@ nav:
     - '寄稿者': about/contributors.md
     - 'ライセンス': about/license.md
 
-site_name: SPO-Kissa Documentation
-docs_dir: docs
-site_url: https://spo-kissa.org
 theme:
   name: material
+  custom_dir: overrides
   language: ja
   palette:
     - media: "(prefers-color-scheme: light)"
@@ -43,8 +46,8 @@ theme:
     - content.code.select
     - content.code.annotate
     - navigation.tabs
-    - navigation.sections
-    - navigation.expand
+#    - navigation.sections
+#    - navigation.expand
     - navigation.indexes
     - navigation.top
     - navigation.tracking
@@ -54,6 +57,23 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      use_pygments: true
+      noclasses: true
+      pygments_style: monokai
+      linenums: false
+  - toc:
+      permalink: true
+  - footnotes
+  - attr_list
 extra:
   social:
     - icon: fontawesome/brands/discord
@@ -68,21 +88,11 @@ extra:
       lang: en
   homepage: https://spo-kissa.org
   generator: false
+site_name: SPO-Kissa Documentation
+docs_dir: docs
+site_url: https://spo-kissa.org
 copyright: Copyright &copy; 2025 SPO Kissa.
 repo_url: https://github.com/spo-kissa/docs
 repo_name: spo-kissa/docs
-markdown_extensions:
-  - admonition
-  - attr_list
-  - md_in_html
-  - pymdownx.details
-  - pymdownx.superfences
-  - pymdownx.highlight:
-      use_pygments: true
-      noclasses: true
-      pygments_style: monokai
-      linenums: false
-  - toc:
-      permalink: true
-  - footnotes
-  - attr_list
+extra_css:
+  - css/custom.css
