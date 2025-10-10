@@ -93,3 +93,19 @@ EOF
 ```bash
 sudo apt install direnv
 ```
+
+
+## 4. Partner-Chainを立ち上げる
+
+### 4-1. dockerを立ち上げる
+```bash
+docker compose -f compose-partner-chains.yml up -d
+```
+
+### 4-2. ステータスをチェックする
+```bash
+curl -s localhost:1337/health | jq '.'
+```
+
+
+
