@@ -110,29 +110,44 @@ git clone https://github.com/midnightntwrk/midnight-node-docker.git
 cd midnight-node-docker
 ```
 
-### 4-3. .envrc ファイルを修正する
+### 4-2. .envrc ファイルを修正する
 ```bash
 sed -i '/^export APPEND_ARGS=/{ s/^/#/; a\
-export APPEND_ARGS="--validator --allow-private-ip --pool-limit 10 --trie-cache-size 0 --prometheus-external --unsafe-rpc-external --rpc-methods=Unsafe --rpc-cors all --rpc-port 9944 --keystore-path=/data/chains/partner_chains_template/keystore/"\
+export APPEND_ARGS="--validator --allow-private-ip --pool-limit 10 --trie-cache-size 0 --prometheus-external --unsafe-rpc-external --rpc-methods=Unsafe --rpc-cors all --rpc-port 9944 --keystore-path=/data/chains/partner_chains_template/keystore/"
 }' $HOME/midnight-node-docker/.envrc
 ```
 
 
-### 4-2. direnv を許可する
+### 4-3. direnv を許可する
 ```bash
 direnv allow
 ```
 
-
-### 4-3. midnightシェルの起動
+### 4-4. PostgreSQLのパスワードを確認する
+戻り値をメモしておいてください
 ```bash
-$HOME/midnight-node-docker/midnight-shell.sh
+echo $(cat postgres.password)
 ```
 
 
 ## 5. 各種鍵の生成
 
-### 鍵の生成
+### 5-1. midnightシェルの起動
+```bash
+$HOME/midnight-node-docker/midnight-shell.sh
+```
+
+### 5-2. midnightシェルからぬける
+```bash
+exit
+```
+
+### 5-3. cardano-keysをmidnightコンテナにコピーする
+```bash
+docker cp cardano-keys/ midnight:cardano-keys
+```
+
+### 5-3. 鍵の生成
 ```bash
 /midnight-node wizards generate-keys
 ```
@@ -158,4 +173,33 @@ $HOME/midnight-node-docker/midnight-shell.sh
 > 🚀 All done!
 
 
+### 5-4. 生成した鍵を移動する
+```bash
+mv ./data/chains/undeployed ./data/chains/partner_chains_template
+```
+
+### 5-5. 事前設定を実行する
+```bash
+/midnight-node wizards prepare-configuration
+```
+
+
+### 5-6. chain-spec.jsonを生成する
+```bash
+/midnight-node wizards create-chain-spec
+```
+
+
+### 5-7. 
+```bash
+/midnight-node wizards setup-main-chain-state
+```
+
+
+```bash
+/midnight-node wizards register1
+```
+
+
+postgresql://postgres:3335cf03a37649c1@152.53.154.72:5432/cexplorer
 
