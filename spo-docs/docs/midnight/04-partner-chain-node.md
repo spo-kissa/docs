@@ -94,6 +94,21 @@ EOF
 sudo apt install direnv
 ```
 
+## GitHubからクローンする
+
+### クローンする
+
+```bash
+cd $HOME
+rm -rf midnight-node-docker
+git clone https://github.com/midnightntwrk/midnight-node-docker.git
+cd midnight-node-docker
+```
+
+```bash
+direnv allow
+```
+
 
 ## 4. Partner-Chainを立ち上げる
 
@@ -102,15 +117,18 @@ sudo apt install direnv
 docker compose -f compose-partner-chains.yml up -d
 ```
 
+
 ### 4-2. ステータスをチェックする
 ```bash
 curl -s localhost:1337/health | jq '.'
 ```
 
+
 ### 4-3. DBのステータスをチェックする
 ```bash
 docker exec -it db-sync-postgres psql -U postgres -d cexplorer
 ```
+
 
 ### 4-4. DBでSQLを実行する
 ```bash
