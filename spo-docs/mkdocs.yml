@@ -1,14 +1,18 @@
 nav:
   - 'ホーム':
     - 'スタートガイド': index.md
-    - 'Midnight':
-      - 'Preview Node の構築': midnight/01-preview-node.md
-      - 'ノードインストール': midnight/02-install-preview-node.md
-      - 'midnight-node の構築': midnight/05-midnight-node.md
-    - 'エアギャップ作成': airgap/index.md
-    - 'Windowsの場合':
-      - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
-      - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
+    - 'カルダノノードの構築':
+      - 'エアギャップ作成':
+        - 'エアギャップとは': airgap/index.md
+        - 'Windowsの場合':
+          - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
+          - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
+      - 'Ubuntu Server の設定': cardano-node/01-ubuntu-server-setup.md
+    - 'その他':
+      - 'Midnight':
+        - 'Preview ノードインストール': midnight/01-install-preview-node.md
+        - 'Partner-Chain-Node の構築': midnight/04-partner-chain-node.md
+        - 'midnight-node の構築': midnight/05-midnight-node.md
 
   - 'マニュアルの書き方':
     - 'VSCode の入手とインストール': manual/01-vscode-installation.md

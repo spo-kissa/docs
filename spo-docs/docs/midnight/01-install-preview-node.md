@@ -263,8 +263,8 @@ wget -q https://book.play.dev.cardano.org/environments/preview/conway-genesis.js
 
 config.jsonファイルを編集する。
 ```bash
-nano ${NODE_CONFIG}-config.json
 ```
+
 
 環境変数を追加し、.bashrcファイルを再読み込みする
 ```bash
@@ -353,3 +353,61 @@ sudo systemctl start cardano-node
 ```bash
 journalctl --unit=cardano-node --follow
 ```
+
+
+## Mithril 
+
+### mithril-clientをダウンロード
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://raw.githubusercontent.com/input-output-hk/mithril/refs/heads/main/mithril-install.sh | sh -s -- -c mithril-client -d latest -p $HOME/git/
+```
+
+### mithril-clientをインストール
+```bash
+sudo mv $HOME/git/mithril-client /usr/local/bin/mithril-client
+```
+
+### バージョン確認
+```bash
+mithril-client -V
+```
+
+
+### 環境変数を設定
+```bash
+export CARDANO_NETWORK=preview
+export AGGREGATOR_ENDPOINT=https://aggregator.testing-preview.api.mithril.network/aggregator
+export GENESIS_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/refs/heads/main/mithril-infra/configuration/testing-preview/genesis.vkey
+export ANCILLARY_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/refs/heads/main/mithril-infra/configuration/testing-preview/ancillary.vkey
+export SNAPSHOT_DIGEST=latest
+```
+
+### 既存DBフォルダを削除
+```bash
+rm -rf $NODE_HOME/db
+```
+
+
+### 最新スナップショットのダウンロード
+```bash
+mithril-client cardano-db download --download-dir $NODE_HOME --include-ancillary latest
+```
+
+
+### cardano-node を起動する
+```bash
+sudo systemctl start cardano-node
+```
+
+
+### journalctl でログを確認する
+```bash
+journalctl --unit cardano-node -f
+```
+
+
+### glive で起動を確認する
+```bash
+glive
+```
+
