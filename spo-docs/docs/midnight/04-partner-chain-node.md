@@ -107,5 +107,20 @@ docker compose -f compose-partner-chains.yml up -d
 curl -s localhost:1337/health | jq '.'
 ```
 
+### 4-3. DBのステータスをチェックする
+```bash
+docker exec -it db-sync-postgres psql -U postgres -d cexplorer
+```
 
+### 4-4. DBでSQLを実行する
+```bash
+SELECT 100 * (
+    EXTRACT(EPOCH FROM (MAX(time) AT TIME ZONE 'UTC')) -
+    EXTRACT(EPOCH FROM (MIN(time) AT TIME ZONE 'UTC'))
+) / (
+    EXTRACT(EPOCH FROM (NOW() AT TIME ZONE 'UTC')) -
+    EXTRACT(EPOCH FROM (MIN(time) AT TIME ZONE 'UTC'))
+) AS sync_percent
+FROM block;
+```
 

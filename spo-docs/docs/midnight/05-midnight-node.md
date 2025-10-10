@@ -147,30 +147,36 @@ exit
 docker cp cardano-keys/ midnight:cardano-keys
 ```
 
+
+### 5-1. midnightシェルの起動
+```bash
+$HOME/midnight-node-docker/midnight-shell.sh
+```
+
+
 ### 5-3. 鍵の生成
 ```bash
 /midnight-node wizards generate-keys
 ```
 
 そのままEnterキーを押す
-> ? node base path (./data)
+> ? node base path (./data)<br />
 
-
-> 🔑 The following public keys were generated and saved to the partner-chains-public-keys.json file:
-> {
->  "sidechain_pub_key": "0x0394730e25efc3eb55db02c1862fbfe8f68fd76c2ca0a2dbd85878ca68526f21fc",
->  "aura_pub_key": "0x52eace6cc1dfd7c64c523c7d735d7165e83bc3a4f6e65048753f6061e4058d08",
->  "grandpa_pub_key": "0xb31475612dcd0342a684172b14f4899a57745f3fd1b7758aa6eab34013a466b4"
-> }
-> You may share them with your chain governance authority
-> if you wish to be included as a permissioned candidate.
-> 
-> ⚙️ Generating network key
-> running external command: /midnight-node key generate-node-key --base-path ./data
-> command output: Generating key in "./data/chains/undeployed/network/secret_ed25519"
-> command output: 12D3KooWRLCiFd99Ts7VA8XBG2XxbV8izq6BgyRtD1G2gJtgcURA
-> 
-> 🚀 All done!
+> 🔑 The following public keys were generated and saved to the partner-chains-public-keys.json file:<br />
+> {<br />
+>  "sidechain_pub_key": "0x0394730e25efc3eb55db02c1862fbfe8f68fd76c2ca0a2dbd85878ca68526f21fc",<br />
+>  "aura_pub_key": "0x52eace6cc1dfd7c64c523c7d735d7165e83bc3a4f6e65048753f6061e4058d08",<br />
+>  "grandpa_pub_key": "0xb31475612dcd0342a684172b14f4899a57745f3fd1b7758aa6eab34013a466b4"<br />
+> }<br />
+> You may share them with your chain governance authority<br />
+> if you wish to be included as a permissioned candidate.<br />
+> <br />
+> ⚙️ Generating network key<br />
+> running external command: /midnight-node key generate-node-key --base-path ./data<br />
+> command output: Generating key in "./data/chains/undeployed/network/secret_ed25519"<br />
+> command output: 12D3KooWRLCiFd99Ts7VA8XBG2XxbV8izq6BgyRtD1G2gJtgcURA<br />
+> <br />
+> 🚀 All done!<br />
 
 
 ### 5-4. 生成した鍵を移動する
@@ -182,6 +188,7 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ```bash
 /midnight-node wizards prepare-configuration
 ```
+![](../assets/midnight/wizards-prepare-configuration.png)
 
 
 ### 5-6. chain-spec.jsonを生成する
