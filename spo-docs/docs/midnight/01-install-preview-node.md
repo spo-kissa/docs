@@ -7,7 +7,7 @@ title: ノードインストール
 !!! info "インストールバージョン"
     | Node   | CLI      | GHC   | Cabal    | CNCLI |
     |--------|----------|-------|----------|-------|
-    | 10.1.4 | 10.1.1.0 | 9.6.7 | 3.12.1.0 | 6.6.0 |
+    | 10.5.1 | 10.1.1.0 | 9.6.7 | 3.12.1.0 | 6.6.0 |
 
 
 ## 2-1. 依存関係インストール
@@ -187,12 +187,12 @@ ghc --version
 ```bash
 mkdir $HOME/git/cardano-node2
 cd $HOME/git/cardano-node2
-wget -q https://github.com/IntersectMBO/cardano-node/releases/download/10.1.4/cardano-node-10.1.4-linux.tar.gz
+wget -q https://github.com/IntersectMBO/cardano-node/releases/download/10.5.1/cardano-node-10.5.1-linux.tar.gz
 ```
 
 解凍する
 ```bash
-tar zxvf cardano-node-10.1.4-linux.tar.gz ./bin/cardano-node ./bin/cardano-cli
+tar zxvf cardano-node-10.5.1-linux.tar.gz ./bin/cardano-node ./bin/cardano-cli
 ```
 
 バージョン確認
@@ -250,6 +250,7 @@ wget -q https://book.play.dev.cardano.org/environments/preview/topology.json -O 
 wget -q https://book.play.dev.cardano.org/environments/preview/shelley-genesis.json -O shelley-genesis.json
 wget -q https://book.play.dev.cardano.org/environments/preview/alonzo-genesis.json -O alonzo-genesis.json
 wget -q https://book.play.dev.cardano.org/environments/preview/conway-genesis.json -O conway-genesis.json
+wget -q https://book.play.dev.cardano.org/environments/preview/peer-snapshot.json -O peer-snapshot.json
 ```
 
 === "リレーノードの場合"
@@ -260,10 +261,6 @@ wget -q https://book.play.dev.cardano.org/environments/preview/conway-genesis.js
     ```bash
     wget --no-use-server-timestamps -q https://book.play.dev.cardano.org/environments/preview/config-bp.json -O ${NODE_CONFIG}-config.json
     ```
-
-config.jsonファイルを編集する。
-```bash
-```
 
 
 環境変数を追加し、.bashrcファイルを再読み込みする
@@ -284,7 +281,7 @@ cat > $NODE_HOME/startRelayNode1.sh << EOF
 DIRECTORY=$NODE_HOME
 PORT=${PORT}
 HOSTADDR=0.0.0.0
-TOPOLOGY=\${DIRECTORY}/${NODE_CONFIG}-topology.json
+TOPOLOGY=\${DIRECTORY}/topology.json
 DB_PATH=\${DIRECTORY}/db
 SOCKET_PATH=\${DIRECTORY}/db/socket
 CONFIG=\${DIRECTORY}/${NODE_CONFIG}-config.json
@@ -330,10 +327,11 @@ WantedBy    = multi-user.target
 EOF
 ```
 
-systemdにユニットファイルをコピーして、権限を付与する
+systemdにユニットファイルをコピーする
 ```bash
 sudo cp $NODE_HOME/cardano-node.service /etc/systemd/system/cardano-node.service
 ```
+権限を付与する
 ```bash
 sudo chmod 644 /etc/systemd/system/cardano-node.service
 ```
@@ -352,6 +350,9 @@ sudo systemctl start cardano-node
 ログを確認する
 ```bash
 journalctl --unit=cardano-node --follow
+```
+```bash
+sudo systemctl stop cardano-node
 ```
 
 
@@ -377,8 +378,8 @@ mithril-client -V
 ```bash
 export CARDANO_NETWORK=preview
 export AGGREGATOR_ENDPOINT=https://aggregator.testing-preview.api.mithril.network/aggregator
-export GENESIS_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/refs/heads/main/mithril-infra/configuration/testing-preview/genesis.vkey
-export ANCILLARY_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/refs/heads/main/mithril-infra/configuration/testing-preview/ancillary.vkey
+export GENESIS_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/main/mithril-infra/configuration/testing-preview/genesis.vkey
+export ANCILLARY_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/main/mithril-infra/configuration/testing-preview/ancillary.vkey
 export SNAPSHOT_DIGEST=latest
 ```
 
