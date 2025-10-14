@@ -97,10 +97,11 @@ chmod 600 authorized_keys
 chmod 700 ~/.ssh
 ```
 
-### 3-5. テキストエディタnanoをインストールする
-```bash
-sudo apt install nano -y
-```
+### 3-5. 鍵ファイルをダウンロードする
+
+~/.ssh フォルダの ssh_ed25519.pub と ssh_ed25519 をダウンロードする。
+
+
 
 ### 3-6. sshd_configを書き換える
 ```bash
@@ -170,6 +171,12 @@ sudo ufw status numbered
 sudo ufw delete 2
 ```
 
+### 4-6. 再接続
+
+ポートと鍵を設定して再接続する
+
+
+
 ## 5. システムの自動更新を有効にする
 
 ### 5-1. パッケージのインストール
@@ -195,7 +202,7 @@ sudo apt install fail2ban -y
 sudo tee /etc/fail2ban/jail.local <<EOF >/dev/null
 [sshd]
 enabled = true
-port = {$SSH_PORT}
+port = $SSH_PORT
 filter = sshd
 logpath = /var/log/auth.log
 maxretry = 3
