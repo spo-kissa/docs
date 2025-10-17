@@ -11,8 +11,8 @@ nav:
     - 'その他':
       - 'Midnight':
         - 'Preview ノードインストール': midnight/01-install-preview-node.md
-        - 'Partner-Chain-Node の構築': midnight/04-partner-chain-node.md
-        - 'midnight-node の構築': midnight/05-midnight-node.md
+        - 'Partner-Chains-Node の構築': midnight/04-partner-chain-node.md
+        - 'Midnight-Node の構築': midnight/05-midnight-node.md
 
   - 'マニュアルの書き方':
     - 'VSCode の入手とインストール': manual/01-vscode-installation.md
@@ -55,7 +55,7 @@ theme:
     - navigation.indexes
     - navigation.top
     - navigation.tracking
-    - navigation.instant
+#    - navigation.instant
     - navigation.footer
     - navigation.path
     - search.suggest
@@ -77,7 +77,6 @@ markdown_extensions:
   - toc:
       permalink: true
   - footnotes
-  - attr_list
 extra:
   social:
     - icon: fontawesome/brands/discord

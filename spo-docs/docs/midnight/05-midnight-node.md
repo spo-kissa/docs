@@ -4,9 +4,14 @@ title: Midnight - Midnight-Node 構築手順
 
 # Midnight - Midnight-Node 構築手順
 
-## 1. Docker 環境をインストール
+## 5. Docker 環境をインストール
 
-### aptリポジトリをアップデート
+!!! warning "注意！"
+    Partner-Chains-Node と Midnight-Node を同じサーバーにインストールする場合は、
+    手順 4-2. から実施してください。
+
+
+### 5-1. aptリポジトリをアップデート
 ```bash
 sudo apt-get update
 ```
@@ -74,7 +79,7 @@ dockerd-rootless-setuptool.sh install
 
 ### 2-5. Dockerの設定ファイルを作成する
 ```bash
-sudo tee /etc/docker/daemon.json <<EOF
+sudo tee /etc/docker/daemon.json <<EOF > /dev/null
 {
   "iptables": false
 }
@@ -110,7 +115,22 @@ git clone https://github.com/midnightntwrk/midnight-node-docker.git
 cd midnight-node-docker
 ```
 
+
 ### 4-2. .envrc ファイルを修正する
+
+xxx.xxx.xxx.xxx を Partner-Chains-Node の IPアドレスに置き換えて実行する
+```
+POSTGRES_IP=xxx.xxx.xxx.xxx
+```
+
+
+```bash
+sed -i "/^export POSTGRES_HOST=/{ s/^/#/; a\
+export POSTGRES_HOST=\"${POSTGRES_IP}\"
+}" $HOME/midnight-node-docker/.envrc
+```
+
+
 ```bash
 sed -i '/^export APPEND_ARGS=/{ s/^/#/; a\
 export APPEND_ARGS="--validator --allow-private-ip --pool-limit 10 --trie-cache-size 0 --prometheus-external --unsafe-rpc-external --rpc-methods=Unsafe --rpc-cors all --rpc-port 9944 --keystore-path=/data/chains/partner_chains_template/keystore/"
@@ -118,37 +138,51 @@ export APPEND_ARGS="--validator --allow-private-ip --pool-limit 10 --trie-cache-
 ```
 
 
-### 4-3. direnv を許可する
+### 4-3. 
 ```bash
+cd midnight-node-docker
+```
+!!! info "エラーが表示されます"
+    以下のエラーが表示されますが正常です！
+    ```txt
+    direnv: error /home/cardano/midnight-node-docker/.envrc is blocked. Run `direnv allow` to approve its content
+    ```
+
+
+### 4-4. direnv を許可する
+```
 direnv allow
 ```
 
-### 4-4. PostgreSQLのパスワードを確認する
+
+### 4-5. PostgreSQLのパスワードを確認する
 戻り値をメモしておいてください
 ```bash
-echo $(cat postgres.password)
+echo postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_IP}:${POSTGRES_PORT}/${POSTGRES_DB}
 ```
 
 
 ## 5. 各種鍵の生成
 
-### 5-1. midnightシェルの起動
+### 5-1. midnight-nodeシェルの起動
 ```bash
 $HOME/midnight-node-docker/midnight-shell.sh
 ```
 
-### 5-2. midnightシェルからぬける
+
+### 5-2. midnight-nodeシェルから抜ける
 ```bash
 exit
 ```
 
-### 5-3. cardano-keysをmidnightコンテナにコピーする
+
+### 5-3. cardano-keysをmidnight-nodeコンテナにコピーする
 ```bash
 docker cp cardano-keys/ midnight:cardano-keys
 ```
 
 
-### 5-1. midnightシェルの起動
+### 5-1. midnight-nodeシェルの起動
 ```bash
 $HOME/midnight-node-docker/midnight-shell.sh
 ```
@@ -184,10 +218,34 @@ $HOME/midnight-node-docker/midnight-shell.sh
 mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ```
 
+
 ### 5-5. 事前設定を実行する
 ```bash
 /midnight-node wizards prepare-configuration
 ```
+
+> node base path: **`./data`**
+
+> Your bootnode should be accessible via: **`IP address`**
+
+> Enter bootnode TCP port: **`3033`**
+
+> Enter bootnode IP address: **`127.0.0.1`**
+
+> Ogmios protocol (http/https) **`http`**
+
+> Ogmios hostname: **`Partner Chains Node の IP アドレス`**
+
+> Ogmios port: **`1337`**
+
+> path to the payment verification file: **`cardano-keys/payment.vkey`**
+
+> Select an UTXO to use as the genesis UTXO: **`#0 で終わるUTXOを選択する`**
+
+> path to the payment signing key file: **`cardano-keys/payment.skey`**
+
+> Do you want to configure a native token for you Partner Chain?: **`No`**
+
 ![](../assets/midnight/wizards-prepare-configuration.png)
 
 
@@ -203,9 +261,39 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ```
 
 
+### 5-8. Midnight-Nodeを登録する step-1/3
 ```bash
 /midnight-node wizards register1
 ```
+
+> Ogmios protocol (http/https): **`http`**
+
+> Ogmios hostname: **`Partner Chains Node の IP アドレス`**
+
+> Ogmios port: **`1337`**
+
+> path to the payment verification file: **`cardano-keys/payment.vkey`**
+
+> Select an UTXO to use as the genesis UTXO: **`#0 で終わるUTXOを選択する`**
+
+![](../assets/midnight/wizards-register1.png)
+
+
+
+### 5-9. Midnight-Nodeを登録する step-2/3
+```bash
+/midnight-node wizards register2 ....
+```
+
+![](../assets/midnight/wizards-register2.png)
+
+
+### 5-10. Midnight-Nodeを登録する step-3/3
+```bash
+/midnight-node wizards register3 ....
+```
+
+![](../assets/midnight/wizards-register3.png)
 
 
 postgresql://postgres:3335cf03a37649c1@152.53.154.72:5432/cexplorer

@@ -18,7 +18,7 @@ sudo apt-get update
 
 ### aptパッケージをインストール
 ```bash
-sudo apt-get install ca-certificates curl
+sudo apt-get install ca-certificates curl jq
 ```
 
 ### keyringsディレクトリをセットアップ
@@ -114,24 +114,80 @@ direnv allow
 
 ### 4-1. dockerを立ち上げる
 ```bash
+cd $HOME/midnight-node-docker
 docker compose -f compose-partner-chains.yml up -d
 ```
 
 
-### 4-2. ステータスをチェックする
+### 4-2. 同期の進捗をチェックする
 ```bash
 curl -s localhost:1337/health | jq '.'
 ```
 
+!!! info "戻り値について"
+    以下の戻り値の例の `"networkSynchronization": 1,` の行の `1` が 100%を表します。
+    
+    この値が `0.01` だった場合は 1% の進捗率です。
+
+    例)
+    ```json
+    {
+      "startTime": "2025-10-16T04:15:35.560800405Z",
+      "lastKnownTip": {
+        "slot": 93950347,
+        "id": "af11ea0773230dc562b5cbb6702896737039bb0d558e04173e683c3c0e481500",
+        "height": 3693002
+      },
+      "lastTipUpdate": "2025-10-16T09:19:07.137082421Z",
+      "networkSynchronization": 1,
+      "currentEra": "conway",
+      "metrics": {
+        "activeConnections": 0,
+        "runtimeStats": {
+          "cpuTime": 53945188690,
+          "currentHeapSize": 804,
+          "gcCpuTime": 46822759954,
+          "maxHeapSize": 885
+        },
+        "sessionDurations": {
+          "max": 0,
+          "mean": 0,
+          "min": 0
+        },
+        "totalConnections": 0,
+        "totalMessages": 0,
+        "totalUnrouted": 0
+      },
+      "connectionStatus": "connected",
+      "currentEpoch": 1087,
+      "slotInEpoch": 33547,
+      "version": "v6.11.0 (6356ede9)",
+      "network": "preview"
+    }
+    ```
+
 
 ### 4-3. DBのステータスをチェックする
+
+PostgreSQLに接続します
+
 ```bash
 docker exec -it db-sync-postgres psql -U postgres -d cexplorer
 ```
 
+!!! alert "エラーが出る場合"
+    dockerコンテナが止まっている可能性があります！
+    以下のコマンドでdokcerコンテナを立ち上げてから再度実行してください。
 
-### 4-4. DBでSQLを実行する
-```bash
+    ```bash
+    cd $HOME/midnight-node-docker
+    docker compose -f compose-partner-chains.yml up -d
+    ```
+
+
+SQL文を実行します
+
+```sql
 SELECT 100 * (
     EXTRACT(EPOCH FROM (MAX(time) AT TIME ZONE 'UTC')) -
     EXTRACT(EPOCH FROM (MIN(time) AT TIME ZONE 'UTC'))
@@ -141,4 +197,29 @@ SELECT 100 * (
 ) AS sync_percent
 FROM block;
 ```
+
+!!! info "戻り値について"
+    以下の例では、99.9999...%同期が完了しています。
+    おおよそこの程度同期が完了していればOKです。
+
+    例)
+    ```txt
+        sync_percent     
+    ---------------------
+     99.9999016400555159
+    (1 row)
+    ```
+
+PostgreSQLからログアウトします
+
+```sql
+exit
+```
+
+
+4-4. 同期が完了するのを待つ
+
+4-2. と 4-3. の両方の同期が完了するまでお待ちください。
+
+両方の同期が完了したら、[5-Midnight-Nodeの構築](./05-midnight-node.md) に進みます。
 
