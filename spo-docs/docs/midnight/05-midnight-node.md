@@ -219,6 +219,7 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ```
 
 
+<!--
 ### 5-5. 事前設定を実行する
 ```bash
 /midnight-node wizards prepare-configuration
@@ -247,21 +248,21 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 > Do you want to configure a native token for you Partner Chain?: **`No`**
 
 ![](../assets/midnight/wizards-prepare-configuration.png)
+-->
 
-
-### 5-6. chain-spec.jsonを生成する
+### 5-5. chain-spec.jsonを生成する
 ```bash
 /midnight-node wizards create-chain-spec
 ```
 
 
-### 5-7. 
+### 5-6. 
 ```bash
 /midnight-node wizards setup-main-chain-state
 ```
 
 
-### 5-8. Midnight-Nodeを登録する step-1/3
+### 5-7. Midnight-Nodeを登録する step-1/3
 ```bash
 /midnight-node wizards register1
 ```
@@ -280,7 +281,7 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 
 
 
-### 5-9. Midnight-Nodeを登録する step-2/3
+### 5-8. Midnight-Nodeを登録する step-2/3
 ```bash
 /midnight-node wizards register2 ....
 ```
@@ -288,7 +289,7 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ![](../assets/midnight/wizards-register2.png)
 
 
-### 5-10. Midnight-Nodeを登録する step-3/3
+### 5-9. Midnight-Nodeを登録する step-3/3
 ```bash
 /midnight-node wizards register3 ....
 ```
@@ -296,5 +297,78 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ![](../assets/midnight/wizards-register3.png)
 
 
-postgresql://postgres:3335cf03a37649c1@152.53.154.72:5432/cexplorer
+登録ステータスを確認する
 
+![](../assets/midnight/wizards-register-status.png)
+
+
+
+### 5-10. docker-node を起動する
+```bash
+cd $HOME/midnight-node-docker
+docker compose up -d
+```
+
+
+### 5-11. LiveView をインストールする
+
+.envrc に追記する
+```bash
+echo "export CONTAINER_NAME=\"midnight-node\"" >> .envrc
+```
+!!! info "エラーが表示されます"
+    以下のエラーが表示されますが正常です！
+    ```txt
+    direnv: error /home/cardano/midnight-node-docker/.envrc is blocked. Run `direnv allow` to approve its content
+    ```
+
+
+direnv を許可する
+```bash
+direnv allow
+```
+
+
+GitHubからLiveView.shをダウンロードする
+
+```bash
+cd $HOME/midnight-node-docker
+wget https://raw.githubusercontent.com/Midnight-Scripts/Midnight-Live-View/refs/heads/main/LiveView.sh
+```
+
+
+パーミッションを設定する
+```bash
+chmod +x LiveView.sh
+```
+
+
+LiveView を起動する
+```bash
+./LiveView.sh
+```
+
+以下のように表示されれば成功です！
+
+![](../assets/midnight/liveview.png)
+
+
+### 5-12. 登録状態を確認する
+
+スクリプトをダウンロードする
+
+```bash
+wget https://raw.githubusercontent.com/Midnight-Scripts/Check_Registration/refs/heads/main/check_registration.sh
+```
+
+
+パーミッションを設定する
+```bash
+chmod +x check_registration.sh
+```
+
+
+スクリプトを実行する
+```bash
+./check_registration.sh
+```
