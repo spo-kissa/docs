@@ -13,6 +13,10 @@ nav:
         - 'Preview ノードインストール': midnight/01-install-preview-node.md
         - 'Partner-Chains-Node の構築': midnight/04-partner-chain-node.md
         - 'Midnight-Node の構築': midnight/05-midnight-node.md
+      - 'ipfsサーバーの構築':
+        - 'KuboによるIPFSサーバーの構築': ./other/ipfs/01-kubo.md
+      - 'NFTの発行':
+        - 'cardano-cliを使用したNFTの発行': ./other/nft/01-cardano-cli.md
 
   - 'マニュアルの書き方':
     - 'VSCode の入手とインストール': manual/01-vscode-installation.md
