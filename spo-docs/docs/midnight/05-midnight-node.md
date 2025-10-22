@@ -4,14 +4,14 @@ title: Midnight - Midnight-Node 構築手順
 
 # Midnight - Midnight-Node 構築手順
 
-## 5. Docker 環境をインストール
+## 1. Docker 環境をインストール
 
 !!! warning "注意！"
     Partner-Chains-Node と Midnight-Node を同じサーバーにインストールする場合は、
     手順 4-2. から実施してください。
 
 
-### 5-1. aptリポジトリをアップデート
+### 1-1. aptリポジトリをアップデート
 ```bash
 sudo apt-get update
 ```
