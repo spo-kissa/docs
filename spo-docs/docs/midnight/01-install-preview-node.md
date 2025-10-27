@@ -2,12 +2,17 @@
 title: ノードインストール
 ---
 
+# 1. Ubuntu の初期設定
+
+まず [Ubuntu Server の構築手順](../cardano-node/01-ubuntu-server-setup.md) をおこなってください。
+
+
 # 2. プレビューノードインストール
 
 !!! info "インストールバージョン"
-    | Node   | CLI      | GHC   | Cabal    | CNCLI |
-    |--------|----------|-------|----------|-------|
-    | 10.5.1 | 10.1.1.0 | 9.6.7 | 3.12.1.0 | 6.6.0 |
+    | Node   | CLI       | GHC   | Cabal    | CNCLI |
+    |--------|-----------|-------|----------|-------|
+    | 10.5.1 | 10.11.0.0 | 9.6.7 | 3.12.1.0 | 6.6.0 |
 
 
 ## 2-1. 依存関係インストール
@@ -201,6 +206,12 @@ $(find $HOME/git/cardano-node2 -type f -name "cardano-cli") version
 $(find $HOME/git/cardano-node2 -type f -name "cardano-node") version
 ```
 
+> cardano-cli 10.11.0.0 - linux-x86_64 - ghc-9.6<br />
+> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+
+> cardano-node 10.5.1 - linux-x86_64 - ghc-9.6<br />
+> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+
 
 バイナリファイルをインストールする
 ```bash
@@ -215,6 +226,12 @@ sudo cp $(find $HOME/git/cardano-node2 -type f -name "cardano-node") /usr/local/
 cardano-cli version
 cardano-node version
 ```
+
+> cardano-cli 10.11.0.0 - linux-x86_64 - ghc-9.6<br />
+> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+
+> cardano-node 10.5.1 - linux-x86_64 - ghc-9.6<br />
+> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
 
 
 
@@ -269,63 +286,131 @@ echo export CARDANO_NODE_SOCKET_PATH="$NODE_HOME/db/socket" >> $HOME/.bashrc
 source $HOME/.bashrc
 ```
 
-リレーノードが使用するポート番号を指定して実行する
-```bash
-PORT=6000
-```
+=== "リレーノードの場合"
+    リレーノードが使用するポート番号を指定して実行する
+    ```bash
+    PORT=6000
+    ```
 
-起動スクリプトファイルを作成する
-```bash
-cat > $NODE_HOME/startRelayNode1.sh << EOF 
-#!/bin/bash
-DIRECTORY=$NODE_HOME
-PORT=${PORT}
-HOSTADDR=0.0.0.0
-TOPOLOGY=\${DIRECTORY}/topology.json
-DB_PATH=\${DIRECTORY}/db
-SOCKET_PATH=\${DIRECTORY}/db/socket
-CONFIG=\${DIRECTORY}/${NODE_CONFIG}-config.json
-/usr/local/bin/cardano-node +RTS -N --disable-delayed-os-memory-return -I0.1 -Iw300 -A16m -F1.5 -H2500M -RTS run --topology \${TOPOLOGY} --database-path \${DB_PATH} --socket-path \${SOCKET_PATH} --host-addr \${HOSTADDR} --port \${PORT} --config \${CONFIG}
-EOF
-```
+    起動スクリプトファイルを作成する
+    ```bash
+    cat > $NODE_HOME/startRelayNode1.sh << EOF 
+    #!/bin/bash
+    DIRECTORY=$NODE_HOME
+    PORT=${PORT}
+    HOSTADDR=0.0.0.0
+    TOPOLOGY=\${DIRECTORY}/topology.json
+    DB_PATH=\${DIRECTORY}/db
+    SOCKET_PATH=\${DIRECTORY}/db/socket
+    CONFIG=\${DIRECTORY}/${NODE_CONFIG}-config.json
+    /usr/local/bin/cardano-node +RTS -N --disable-delayed-os-memory-return -I0.1 -Iw300 -A16m -F1.5 -H2500M -RTS run --topology \${TOPOLOGY} --database-path \${DB_PATH} --socket-path \${SOCKET_PATH} --host-addr \${HOSTADDR} --port \${PORT} --config \${CONFIG}
+    EOF
+    ```
+
+=== "BPノードの場合"
+    BPノードが使用するポート番号を指定して実行する
+    ```bash
+    PORT=XXXX
+    ```
+
+    起動スクリプトファイルを作成する
+    ```bash
+    cat > $NODE_HOME/startBlockProducingNode.sh << EOF 
+    #!/bin/bash
+    DIRECTORY=$NODE_HOME
+    PORT=${PORT}
+    HOSTADDR=0.0.0.0
+    TOPOLOGY=\${DIRECTORY}/topology.json
+    DB_PATH=\${DIRECTORY}/db
+    SOCKET_PATH=\${DIRECTORY}/db/socket
+    CONFIG=\${DIRECTORY}/${NODE_CONFIG}-config.json
+    /usr/local/bin/cardano-node +RTS -N --disable-delayed-os-memory-return -I0.1 -Iw300 -A16m -F1.5 -H2500M -RTS run --topology \${TOPOLOGY} --database-path \${DB_PATH} --socket-path \${SOCKET_PATH} --host-addr \${HOSTADDR} --port \${PORT} --config \${CONFIG}
+    EOF
+    ```
+
+
 
 起動スクリプトに実行権限を付与し、ブロックチェーンとの同期を開始する
-```bash
-cd $NODE_HOME
-chmod +x startRelayNode1.sh
-./startRelayNode1.sh
-```
+
+=== "リレーノードの場合"
+    ```bash
+    cd $NODE_HOME
+    chmod +x startRelayNode1.sh
+    ./startRelayNode1.sh
+    ```
+
+=== "BPノードの場合"
+    ```bash
+    cd $NODE_HOME
+    chmod +x startBlockProducingNode.sh
+    ./startBlockProducingNode.sh
+    ```
+
+
+
 
 サービスユニットファイルを作成する
-```bash
-cat > $NODE_HOME/cardano-node.service << EOF 
-# The Cardano node service (part of systemd)
-# file: /etc/systemd/system/cardano-node.service 
+=== "リレーノードの場合"
+    ```bash
+    cat > $NODE_HOME/cardano-node.service << EOF 
+    # The Cardano node service (part of systemd)
+    # file: /etc/systemd/system/cardano-node.service 
 
-[Unit]
-Description     = Cardano node service
-Wants           = network-online.target
-After           = network-online.target 
+    [Unit]
+    Description     = Cardano node service
+    Wants           = network-online.target
+    After           = network-online.target 
 
-[Service]
-User            = ${USER}
-Type            = simple
-WorkingDirectory= ${NODE_HOME}
-ExecStart       = /bin/bash -c '${NODE_HOME}/startRelayNode1.sh'
-KillSignal=SIGINT
-RestartKillSignal=SIGINT
-TimeoutStopSec=300
-LimitNOFILE=32768
-Restart=always
-RestartSec=5
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=cardano-node
+    [Service]
+    User            = ${USER}
+    Type            = simple
+    WorkingDirectory= ${NODE_HOME}
+    ExecStart       = /bin/bash -c '${NODE_HOME}/startRelayNode1.sh'
+    KillSignal=SIGINT
+    RestartKillSignal=SIGINT
+    TimeoutStopSec=300
+    LimitNOFILE=32768
+    Restart=always
+    RestartSec=5
+    StandardOutput=syslog
+    StandardError=syslog
+    SyslogIdentifier=cardano-node
 
-[Install]
-WantedBy    = multi-user.target
-EOF
-```
+    [Install]
+    WantedBy    = multi-user.target
+    EOF
+    ```
+
+=== "BPノードの場合"
+    ```bash
+    cat > $NODE_HOME/cardano-node.service << EOF 
+    # The Cardano node service (part of systemd)
+    # file: /etc/systemd/system/cardano-node.service 
+
+    [Unit]
+    Description     = Cardano node service
+    Wants           = network-online.target
+    After           = network-online.target 
+
+    [Service]
+    User            = ${USER}
+    Type            = simple
+    WorkingDirectory= ${NODE_HOME}
+    ExecStart       = /bin/bash -c '${NODE_HOME}/startBlockProducingNode.sh'
+    KillSignal=SIGINT
+    RestartKillSignal=SIGINT
+    TimeoutStopSec=300
+    LimitNOFILE=32768
+    Restart=always
+    RestartSec=5
+    StandardOutput=syslog
+    StandardError=syslog
+    SyslogIdentifier=cardano-node
+
+    [Install]
+    WantedBy    = multi-user.target
+    EOF
+    ```
 
 systemdにユニットファイルをコピーする
 ```bash
@@ -376,11 +461,9 @@ mithril-client -V
 
 ### 環境変数を設定
 ```bash
-export CARDANO_NETWORK=preview
 export AGGREGATOR_ENDPOINT=https://aggregator.testing-preview.api.mithril.network/aggregator
-export GENESIS_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/main/mithril-infra/configuration/testing-preview/genesis.vkey
-export ANCILLARY_VERIFICATION_KEY=https://raw.githubusercontent.com/input-output-hk/mithril/main/mithril-infra/configuration/testing-preview/ancillary.vkey
-export SNAPSHOT_DIGEST=latest
+export GENESIS_VERIFICATION_KEY=$(curl -fsSL https://raw.githubusercontent.com/input-output-hk/mithril/main/mithril-infra/configuration/testing-preview/genesis.vkey)
+export ANCILLARY_VERIFICATION_KEY=$(curl -fsSL https://raw.githubusercontent.com/input-output-hk/mithril/main/mithril-infra/configuration/testing-preview/ancillary.vkey)
 ```
 
 ### 既存DBフォルダを削除
@@ -391,7 +474,12 @@ rm -rf $NODE_HOME/db
 
 ### 最新スナップショットのダウンロード
 ```bash
-mithril-client cardano-db download --download-dir $NODE_HOME --include-ancillary latest
+mithril-client cardano-db download \
+  --backend v2 \
+  --run-mode testing-preview \
+  --download-dir "$NODE_HOME" \
+  --include-ancillary \
+  latest
 ```
 
 
@@ -412,3 +500,46 @@ journalctl --unit cardano-node -f
 glive
 ```
 
+
+## Guild LiveView
+
+### 
+```bash
+mkdir $NODE_HOME/scripts
+cd $NODE_HOME/scripts
+sudo apt install bc tcptraceroute -y
+```
+
+```bash
+curl -s -o gLiveView.sh https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/gLiveView.sh
+curl -s -o env https://raw.githubusercontent.com/cardano-community/guild-operators/master/scripts/cnode-helper-scripts/env
+chmod 755 gLiveView.sh
+```
+
+=== "リレーノードの場合"
+    ```bash
+    PORT=`grep "PORT=" $NODE_HOME/startRelayNode1.sh`
+    b_PORT=${PORT#"PORT="}
+    echo "リレーポートは${b_PORT}です"
+    ```
+
+=== "BPノードの場合"
+    ```bash
+    PORT=`grep "PORT=" $NODE_HOME/startBlockProducingNode.sh`
+    b_PORT=${PORT#"PORT="}
+    echo "BPポートは${b_PORT}です"
+    ```
+
+```bash
+sed -i $NODE_HOME/scripts/env \
+    -e '1,73s!#CNODE_HOME="/opt/cardano/cnode"!CNODE_HOME=${NODE_HOME}!' \
+    -e '1,73s!#CNODE_PORT=6000!CNODE_PORT='${b_PORT}'!' \
+    -e '1,73s!#UPDATE_CHECK="Y"!UPDATE_CHECK="N"!' \
+    -e '1,73s!#CONFIG="${CNODE_HOME}/files/config.json"!CONFIG="${CNODE_HOME}/'${NODE_CONFIG}'-config.json"!' \
+    -e '1,73s!#SOCKET="${CNODE_HOME}/sockets/node.socket"!SOCKET="${CNODE_HOME}/db/socket"!'
+```
+
+```bash
+echo alias glive="'cd $NODE_HOME/scripts; ./gLiveView.sh'" >> $HOME/.bashrc
+source $HOME/.bashrc
+```

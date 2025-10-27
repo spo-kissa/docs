@@ -147,8 +147,13 @@ sudo service sshd reload
 ## 4. ファイアーウォールを有効化する
 
 ### 4-1. SSHのポートを確認する
+
 ```bash
-echo "SSHのポート番号は {$SSH_PORT} です"
+SSH_PORT=`grep "Port" /etc/ssh/sshd_config | sed -e 's/[^0-9]//g'`
+```
+
+```bash
+echo "SSHのポート番号は ${SSH_PORT} です"
 ```
 
 ### 4-2. SSHのポートを開放する
