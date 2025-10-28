@@ -221,5 +221,5 @@ exit
 
 4-2. と 4-3. の両方の同期が完了するまでお待ちください。
 
-両方の同期が完了したら、[Midnight-Nodeの構築](./05-midnight-node.md) に進みます。
+両方の同期が完了したら、[Midnight-Nodeの構築](./12-midnight-node.md) に進みます。
 

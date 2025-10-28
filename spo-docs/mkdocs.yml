@@ -11,8 +11,13 @@ nav:
     - 'その他':
       - 'Midnight':
         - 'Preview ノードインストール': midnight/01-install-preview-node.md
-        - 'Partner-Chains-Node の構築': midnight/04-partner-chain-node.md
-        - 'Midnight-Node の構築': midnight/05-midnight-node.md
+        - 'Preview トポロジー設定': midnight/02-setup-preview-topology.md
+        - 'BPキーを作成': midnight/03-setup-bp-keys.md
+        - 'アドレスを作成': midnight/04-create-addresses.md
+        - 'ステークアドレスの登録': midnight/05-register-stake-address.md
+        - 'ステークプールの登録': midnight/06-register-stake-pool.md
+        - 'Partner-Chains-Node の構築': midnight/11-partner-chain-node.md
+        - 'Midnight-Node の構築': midnight/12-midnight-node.md
       - 'ipfsサーバーの構築':
         - 'KuboによるIPFSサーバーの構築': ./other/ipfs/01-kubo.md
       - 'NFTの発行':

@@ -441,7 +441,7 @@ sudo systemctl stop cardano-node
 ```
 
 
-## Mithril 
+## Mithrilによる同期
 
 ### mithril-clientをダウンロード
 ```bash
