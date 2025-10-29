@@ -4,39 +4,38 @@ title: Midnight - Partner-Chain-Node 構築手順
 
 # Midnight - Partner-Chain-Node 構築手順
 
-
 !!! warning "まずはじめに"
     [Ubuntu Server の設定](../cardano-node/01-ubuntu-server-setup.md) を先におこなってからこの手順を実行してください！
 
 
 ## 1. Docker 環境をインストール
 
-### aptリポジトリをアップデート
+### 1-1. aptリポジトリをアップデート
 ```bash
 sudo apt-get update
 ```
 
-### aptパッケージをインストール
+### 1-2. 必要なパッケージをインストール
 ```bash
 sudo apt-get install ca-certificates curl jq
 ```
 
-### keyringsディレクトリをセットアップ
+### 1-3. keyringsディレクトリをセットアップ
 ```bash
 sudo install -m 0755 -d /etc/apt/keyrings
 ```
 
-### Docker公式のGPGキーをインポート
+### 1-4. Docker公式のGPGキーをインポート
 ```bash
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 ```
 
-### パーミッションを設定
+### 1-5. パーミッションを設定
 ```bash
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 ```
 
-### aptソースにリポジトリを追加
+### 1-6. aptソースにリポジトリを追加
 ```bash
 echo \
   "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
@@ -44,14 +43,14 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 ```
 
-### aptリポジトリをアップデート
+### 1-7. aptリポジトリをアップデート
 ```bash
 sudo apt-get update
 ```
 
-### Dockerの最新版をインストール
+### 1-8. Dockerの最新版をインストール
 ```bash
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 ```
 
 
@@ -79,7 +78,7 @@ dockerd-rootless-setuptool.sh install
 
 ### 2-5. Dockerの設定ファイルを作成する
 ```bash
-sudo tee /etc/docker/daemon.json <<EOF
+sudo tee /etc/docker/daemon.json <<EOF > /dev/null
 {
   "iptables": false
 }
@@ -91,12 +90,27 @@ EOF
 
 ### 3-1. direnvパッケージをインストール
 ```bash
-sudo apt install direnv
+sudo apt install direnv -y
 ```
 
-## GitHubからクローンする
 
-### クローンする
+### 3-2. .bashrc に追記する
+```bash
+cat <<EOF >> ~/.bashrc
+eval "\$(direnv hook bash)"
+EOF
+```
+
+
+### 3-3. .bashrc を再読み込み
+```bash
+source ~/.bashrc
+```
+
+
+## 4. GitHubからクローンする
+
+### 4-1. クローンする
 
 ```bash
 cd $HOME
@@ -104,22 +118,27 @@ rm -rf midnight-node-docker
 git clone https://github.com/midnightntwrk/midnight-node-docker.git
 cd midnight-node-docker
 ```
+!!! info "エラーが表示されます"
+    以下のエラーが表示されますが正常です！
+    ```txt
+    direnv: error /home/cardano/midnight-node-docker/.envrc is blocked. Run `direnv allow` to approve its content
+    ```
 
 ```bash
 direnv allow
 ```
 
 
-## 4. Partner-Chainを立ち上げる
+## 5. Partner-Chainを立ち上げる
 
-### 4-1. dockerを立ち上げる
+### 5-1. dockerを立ち上げる
 ```bash
 cd $HOME/midnight-node-docker
 docker compose -f compose-partner-chains.yml up -d
 ```
 
 
-### 4-2. 同期の進捗をチェックする
+### 5-2. 同期の進捗をチェックする
 ```bash
 curl -s localhost:1337/health | jq '.'
 ```
@@ -167,7 +186,7 @@ curl -s localhost:1337/health | jq '.'
     ```
 
 
-### 4-3. DBのステータスをチェックする
+### 5-3. DBのステータスをチェックする
 
 PostgreSQLに接続します
 
@@ -217,9 +236,9 @@ exit
 ```
 
 
-### 4-4. 同期が完了するのを待つ
+### 5-4. 同期が完了するのを待つ
 
-4-2. と 4-3. の両方の同期が完了するまでお待ちください。
+5-2. と 5-3. の両方の同期が完了するまでお待ちください。
 
 両方の同期が完了したら、[Midnight-Nodeの構築](./12-midnight-node.md) に進みます。
 
