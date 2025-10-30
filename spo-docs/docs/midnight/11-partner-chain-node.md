@@ -85,6 +85,11 @@ sudo tee /etc/docker/daemon.json <<EOF > /dev/null
 EOF
 ```
 
+### 2-6. ログアウトしてもコンテナが起動し続けるようにする
+```bash
+loginctl enable-linger "$USER"
+```
+
 
 ## 3. direnvをインストールする
 
@@ -129,9 +134,9 @@ direnv allow
 ```
 
 
-## 5. Partner-Chainを立ち上げる
+## 5. Partner-Chainsを立ち上げる
 
-### 5-1. dockerを立ち上げる
+### 5-1. dockerで立ち上げる
 ```bash
 cd $HOME/midnight-node-docker
 docker compose -f compose-partner-chains.yml up -d
