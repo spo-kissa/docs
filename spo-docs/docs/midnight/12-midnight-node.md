@@ -159,7 +159,7 @@ export POSTGRES_HOST=\"${POSTGRES_IP}\"
 }" $HOME/midnight-node-docker/.envrc
 ```
 
-### 6-2. .envrc ファイルを修正する(1/2)
+### 6-2. .envrc ファイルを修正する(2/2)
 
 midnight-nodeコンテナがバリデーターモードで起動するようにフラグを変更する
 

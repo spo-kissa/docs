@@ -39,6 +39,7 @@ theme:
   language: ja
   palette:
     - media: "(prefers-color-scheme: light)"
+      scheme: github
       primary: brown
       toggle:
         icon: material/weather-night
@@ -80,7 +81,10 @@ markdown_extensions:
       alternate_style: true
   - pymdownx.highlight:
       use_pygments: true
-      noclasses: true
+      noclasses: false
+      pygments_lang_class: true
+      anchor_linenums: true
+      line_spans: __span
       pygments_style: monokai
       linenums: false
   - toc:
