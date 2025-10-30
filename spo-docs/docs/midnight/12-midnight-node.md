@@ -86,6 +86,11 @@ sudo tee /etc/docker/daemon.json <<EOF > /dev/null
 EOF
 ```
 
+### 2-6. ログアウトしてもコンテナが起動し続けるようにする
+```bash
+loginctl enable-linger "$USER"
+```
+
 
 ## 3. direnvをインストールする
 
@@ -112,17 +117,41 @@ source ~/.bashrc
 ```bash
 cd $HOME
 git clone https://github.com/midnightntwrk/midnight-node-docker.git
-cd midnight-node-docker
 ```
 
 
-### 4-2. .envrc ファイルを修正する
+## 5. cardano-nodeの鍵を用意する
+
+### 5-1. ディレクトリの作成
+
+```bash
+mkdir -p $HOME/midnight-node-docker/cardano-keys
+```
+
+
+### 5-2. 鍵の転送
+
+!!! info "ファイル転送"
+    エアギャップマシンの`node.skey`と`payment.vkey`と`payment.skey`をMidnight-Nodeの`cardano-keys`ディレクトリにコピーします。
+
+
+### 5-3. 鍵ファイル名の変更
+
+Midnightのマニュアル通りに進めるため`node.skey`を`cold.skey`にファイル名を変更します(オプション)
+
+```bash
+mv $HOME/midnight-node-docker/cardano-keys/node.skey $HOME/midnight-node-docker/cardano-keys/cold.skey
+```
+
+
+## 6. 環境変数の変更
+
+### 6-1. .envrc ファイルを修正する(1/2)
 
 xxx.xxx.xxx.xxx を Partner-Chains-Node の IPアドレスに置き換えて実行する
 ```
 POSTGRES_IP=xxx.xxx.xxx.xxx
 ```
-
 
 ```bash
 sed -i "/^export POSTGRES_HOST=/{ s/^/#/; a\
@@ -130,6 +159,9 @@ export POSTGRES_HOST=\"${POSTGRES_IP}\"
 }" $HOME/midnight-node-docker/.envrc
 ```
 
+### 6-2. .envrc ファイルを修正する(1/2)
+
+midnight-nodeコンテナがバリデーターモードで起動するようにフラグを変更する
 
 ```bash
 sed -i '/^export APPEND_ARGS=/{ s/^/#/; a\
@@ -138,7 +170,7 @@ export APPEND_ARGS="--validator --allow-private-ip --pool-limit 10 --trie-cache-
 ```
 
 
-### 4-3. 環境変数を反映する
+### 6-3. 環境変数を反映する
 ```bash
 cd $HOME/midnight-node-docker
 ```
@@ -149,13 +181,13 @@ cd $HOME/midnight-node-docker
     ```
 
 
-### 4-4. direnv を許可する
+### 6-4. direnv を許可する
 ```
 direnv allow
 ```
 
 
-### 4-5. PostgreSQLの接続文字列を確認する
+### 6-5. PostgreSQLの接続文字列を確認する
 戻り値をメモ帳などにコピーしておいてください
 ```bash
 echo postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_IP}:${POSTGRES_PORT}/${POSTGRES_DB}
@@ -165,33 +197,33 @@ echo postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_IP}:${POSTGRE
 > postgresql://postgres:askljdlfkjasdjf@192.168.131.102:5432/cexplorer
 
 
-## 5. 各種鍵の生成
+## 7. 各種鍵の生成
 
-### 5-1. midnight-nodeシェルの起動
+### 7-1. midnight-nodeシェルの起動
 ```bash
 $HOME/midnight-node-docker/midnight-shell.sh
 ```
 
 
-### 5-2. midnight-nodeシェルから抜ける
+### 7-2. midnight-nodeシェルから抜ける
 ```bash
 exit
 ```
 
 
-### 5-3. cardano-keysをmidnightコンテナにコピーする
+### 7-3. cardano-keysをmidnightコンテナにコピーする
 ```bash
 docker cp cardano-keys/ midnight:cardano-keys
 ```
 
 
-### 5-4. midnight-nodeシェルの起動
+### 7-4. midnight-nodeシェルの起動
 ```bash
 $HOME/midnight-node-docker/midnight-shell.sh
 ```
 
 
-### 5-5. 鍵の生成
+### 7-5. 鍵の生成
 ```bash
 /midnight-node wizards generate-keys
 ```
@@ -216,7 +248,7 @@ $HOME/midnight-node-docker/midnight-shell.sh
 > 🚀 All done!<br />
 
 
-### 5-6. 生成した鍵を移動する
+### 7-6. 生成した鍵を移動する
 ```bash
 mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ```
@@ -253,19 +285,19 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ![](../assets/midnight/wizards-prepare-configuration.png)
 -->
 
-### 5-7. chain-spec.jsonを生成する
+### 7-7. chain-spec.jsonを生成する
 ```bash
 /midnight-node wizards create-chain-spec
 ```
 
 
-### 5-8. 
+### 7-8. 
 ```bash
 /midnight-node wizards setup-main-chain-state
 ```
 
 
-### 5-9. Midnight-Nodeを登録する step-1/3
+### 7-9. Midnight-Nodeを登録する step-1/3
 ```bash
 /midnight-node wizards register1
 ```
@@ -284,7 +316,7 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 
 
 
-### 5-10. Midnight-Nodeを登録する step-2/3
+### 7-10. Midnight-Nodeを登録する step-2/3
 ```bash
 /midnight-node wizards register2 ....
 ```
@@ -292,7 +324,7 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 ![](../assets/midnight/wizards-register2.png)
 
 
-### 5-11. Midnight-Nodeを登録する step-3/3
+### 7-11. Midnight-Nodeを登録する step-3/3
 ```bash
 /midnight-node wizards register3 ....
 ```
@@ -306,16 +338,17 @@ mv ./data/chains/undeployed ./data/chains/partner_chains_template
 
 
 
-### 5-12. docker-node を起動する
+### 7-12. docker-node を起動する
 ```bash
 cd $HOME/midnight-node-docker
 docker compose up -d
 ```
 
 
-### 5-13. LiveView をインストールする
+## 8. LiveView をインストールする
 
-.envrc に追記する
+### 8-1. .envrc に追記する
+
 ```bash
 echo "export CONTAINER_NAME=\"midnight-node\"" >> .envrc
 ```
@@ -326,13 +359,13 @@ echo "export CONTAINER_NAME=\"midnight-node\"" >> .envrc
     ```
 
 
-direnv を許可する
+### 8-2. direnv を許可する
 ```bash
 direnv allow
 ```
 
 
-GitHubからLiveView.shをダウンロードする
+### 8-3. GitHubからLiveView.shをダウンロードする
 
 ```bash
 cd $HOME/midnight-node-docker
@@ -340,13 +373,13 @@ wget https://raw.githubusercontent.com/Midnight-Scripts/Midnight-Live-View/refs/
 ```
 
 
-パーミッションを設定する
+### 8-4. パーミッションを設定する
 ```bash
 chmod +x LiveView.sh
 ```
 
 
-LiveView を起動する
+### 8-5. LiveView を起動する
 ```bash
 ./LiveView.sh
 ```
@@ -358,22 +391,23 @@ Not Registeredの表記が Registered に変わればブロックを生成し始
 ![](../assets/midnight/liveview.png)
 
 
-### 5-14. 登録状態を確認する
+## 9. 登録状態を確認する
 
-スクリプトをダウンロードする
+### 9-1. スクリプトをダウンロードする
 
 ```bash
+cd $HOME/midnight-node-docker
 wget https://raw.githubusercontent.com/Midnight-Scripts/Check_Registration/refs/heads/main/check_registration.sh
 ```
 
 
-パーミッションを設定する
+### 9-2. パーミッションを設定する
 ```bash
 chmod +x check_registration.sh
 ```
 
 
-スクリプトを実行する
+### 9-3. スクリプトを実行する
 ```bash
 ./check_registration.sh
 ```
