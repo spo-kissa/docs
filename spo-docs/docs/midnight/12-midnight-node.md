@@ -518,7 +518,13 @@ docker compose up -d
 
 ### 7-14. cardano-keys を削除する
 
+```bash
 docker exec midnight rm -r cardano-keys/
+```
+
+```bash
+rm -r $HOME/midnight-node-docker/cardano-keys
+```
 
 
 ## 8. LiveView をインストールする
@@ -595,6 +601,8 @@ chmod +x check_registration.sh
 ```
 
 
+例)
+```
 --- Validator Public Keys ---
 Sidechain Pub Key: 0x0283155aaddf7691f666f801d52ed9a651de1a39a0eb4292c2029603bb7380ced1
 Aura Pub Key: 0xca01c0cee006f9cd0d1a0dc9e078dfe2878360ba7bc30e041d08cc338e4e8d60
@@ -611,4 +619,4 @@ Checking if the Sidechain Public Key is registered in epoch 1101...
 
 Checking future epoch 1103 for registration...
 🕒 Your validator will be registered in epoch 1103.
-
+```
