@@ -18,6 +18,8 @@ nav:
         - 'ステークプールの登録': midnight/06-register-stake-pool.md
         - 'Partner-Chains-Node の構築': midnight/11-partner-chain-node.md
         - 'Midnight-Node の構築': midnight/12-midnight-node.md
+      - 'gLiveViewの更新':
+        - 'gLiveViewの更新手順': other/glive/01-update-glive.md
       - 'ipfsサーバーの構築':
         - 'KuboによるIPFSサーバーの構築': ./other/ipfs/01-kubo.md
       - 'NFTの発行':
