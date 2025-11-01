@@ -6,3 +6,4 @@ fontawesome-markdown
 mdx_unimoji
 pymdown-markdown-math
 pymdown-extensions
+mkdocs-git-revision-date-localized-plugin

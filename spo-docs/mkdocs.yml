@@ -73,6 +73,16 @@ theme:
     - search.suggest
     - search.highlight
     - search.share
+
+plugins:
+  - search
+  - git-revision-date-localized:
+      type: custom
+      custom_format: "%Y-%m-%d %H:%M"
+      locale: ja
+      timezone: Asia/Tokyo
+      fallback_to_build_date: true
+
 markdown_extensions:
   - admonition
   - attr_list
