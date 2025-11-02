@@ -40,7 +40,7 @@ chmod 755 gLiveView.sh
 
 ```bash
 sed -i $NODE_HOME/scripts/env \
-    -e '1,73s!#CNODE_HOME="/opt/cardano/cnode"!CNODE_HOME=${NODE_HOME}!' \
+    -e '1,73s!#CNODE_HOME="/opt/cardano/cnode"!CNODE_HOME="'${NODE_HOME}'"!' \
     -e '1,73s!#CNODE_PORT=6000!CNODE_PORT='${b_PORT}'!' \
     -e '1,73s!#UPDATE_CHECK="Y"!UPDATE_CHECK="N"!' \
     -e '1,73s!#CONFIG="${CNODE_HOME}/files/config.json"!CONFIG="${CNODE_HOME}/'${NODE_CONFIG}'-config.json"!' \
