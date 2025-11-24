@@ -551,7 +551,7 @@ direnv allow
 
 ```bash
 cd $HOME/midnight-node-docker
-wget https://raw.githubusercontent.com/Midnight-Scripts/Midnight-Live-View/refs/heads/main/LiveView.sh
+wget https://raw.githubusercontent.com/Midnight-Scripts/Midnight-Live-View/refs/heads/main/LiveView.sh -O LiveView.sh
 ```
 
 
@@ -577,6 +577,19 @@ docker cp midnight:partner-chains-public-keys.json ./
 Not Registeredの表記が Registered に変わればブロックを生成し始めます！
 
 ![](../assets/midnight/liveview.png)
+
+
+### 8-7. ショートカットを登録する
+
+`mlive`で起動出来るようにする
+```bash
+echo alias mlive="'direnv exec "$HOME/midnight-node-docker" $HOME/midnight-node-docker/LiveView.sh'" >> $HOME/.bashrc
+source $HOME/.bashrc
+```
+
+```bash
+mlive
+```
 
 
 ## 9. 登録状態を確認する
