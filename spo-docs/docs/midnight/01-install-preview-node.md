@@ -12,7 +12,7 @@ title: ノードインストール
 !!! info "インストールバージョン"
     | Node   | CLI       | GHC   | Cabal    | CNCLI |
     |--------|-----------|-------|----------|-------|
-    | 10.5.1 | 10.11.0.0 | 9.6.7 | 3.12.1.0 | 6.6.0 |
+    | 10.5.3 | 10.11.0.0 | 9.6.7 | 3.12.1.0 | 6.6.0 |
 
 
 ## 2-1. 依存関係インストール
@@ -23,6 +23,10 @@ sudo apt update -y && sudo apt upgrade -y
 ```
 
 依存するパッケージをインストール
+```bash
+sudo apt install git jq bc automake tmux rsync htop curl -y
+```
+<!--
 ```bash
 sudo apt install git jq bc automake tmux rsync htop curl build-essential pkg-config libffi-dev libgmp-dev libssl-dev libtinfo-dev libsystemd-dev zlib1g-dev make g++ wget libncursesw5 libtool autoconf liblmdb-dev -y
 ```
@@ -185,19 +189,20 @@ ghc --version
 !!! info バージョン確認
     Cabalバージョン「3.12.1.0」
     GHCバージョン「9.6.7」
+-->
 
 ## 3-1. バイナリをダウンロード
 
 バイナリをダウンロード
 ```bash
-mkdir $HOME/git/cardano-node2
+mkdir -p $HOME/git/cardano-node2
 cd $HOME/git/cardano-node2
-wget -q https://github.com/IntersectMBO/cardano-node/releases/download/10.5.1/cardano-node-10.5.1-linux.tar.gz
+wget -q https://github.com/IntersectMBO/cardano-node/releases/download/10.5.3/cardano-node-10.5.3-linux.tar.gz
 ```
 
 解凍する
 ```bash
-tar zxvf cardano-node-10.5.1-linux.tar.gz ./bin/cardano-node ./bin/cardano-cli
+tar zxvf cardano-node-10.5.3-linux.tar.gz ./bin/cardano-node ./bin/cardano-cli
 ```
 
 バージョン確認
@@ -207,10 +212,10 @@ $(find $HOME/git/cardano-node2 -type f -name "cardano-node") version
 ```
 
 > cardano-cli 10.11.0.0 - linux-x86_64 - ghc-9.6<br />
-> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+> git rev 6c034ec038d8d276a3595e10e2d38643f09bd1f2<br />
 
-> cardano-node 10.5.1 - linux-x86_64 - ghc-9.6<br />
-> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+> cardano-node 10.5.3 - linux-x86_64 - ghc-9.6<br />
+> git rev 6c034ec038d8d276a3595e10e2d38643f09bd1f2<br />
 
 
 バイナリファイルをインストールする
@@ -228,10 +233,10 @@ cardano-node version
 ```
 
 > cardano-cli 10.11.0.0 - linux-x86_64 - ghc-9.6<br />
-> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+> git rev 6c034ec038d8d276a3595e10e2d38643f09bd1f2<br />
 
-> cardano-node 10.5.1 - linux-x86_64 - ghc-9.6<br />
-> git rev ca1ec278070baf4481564a6ba7b4a5b9e3d9f366<br />
+> cardano-node 10.5.3 - linux-x86_64 - ghc-9.6<br />
+> git rev 6c034ec038d8d276a3595e10e2d38643f09bd1f2<br />
 
 
 
