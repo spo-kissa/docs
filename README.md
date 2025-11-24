@@ -2,7 +2,7 @@
 
 ## Documentation
 
-https://spo-kissa.org/doc/
+https://spo-kissa.org/docs/
 
 ## Preview Page
 
