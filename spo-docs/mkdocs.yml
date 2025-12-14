@@ -4,6 +4,11 @@ nav:
     - 'カルダノノードの構築':
       - 'エアギャップ作成':
         - 'エアギャップとは': airgap/index.md
+        - 'Docker Airgap':
+          - 'Docker Airgap とは？': airgap/docker-airgap/index.md
+          - 'Docker Desktop のインストール': airgap/docker-airgap/01-install-docker-desktop.md
+          - 'Docker Airgap のセットアップ': airgap/docker-airgap/02-setup-airgap.md
+          - 'ctool のセットアップ': airgap/docker-airgap/03-setup-ctool.md
         - 'Windowsの場合':
           - 'Docker-airgapの構築': airgap/01-windows-docker-airgap.md
           - 'VirtualBox with ctoolの構築': airgap/02-windows-virtualbox-with-ctool.md
@@ -18,6 +23,7 @@ nav:
         - 'ステークプールの登録': midnight/06-register-stake-pool.md
         - 'Partner-Chains-Node の構築': midnight/11-partner-chain-node.md
         - 'Midnight-Node の構築': midnight/12-midnight-node.md
+        - 'Grafana の設定': midnight/13-setup-grafana.md
       - 'gLiveViewの更新':
         - 'gLiveViewの更新手順': other/glive/01-update-glive.md
       - 'ipfsサーバーの構築':
@@ -39,6 +45,8 @@ theme:
   name: material
   custom_dir: overrides
   language: ja
+  font:
+    text: Noto Sans JP
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: github
@@ -61,6 +69,7 @@ theme:
     - content.code.copy
     - content.code.select
     - content.code.annotate
+    - content.footer
     - navigation.tabs
 #    - navigation.sections
 #    - navigation.expand
@@ -82,6 +91,11 @@ plugins:
       locale: ja
       timezone: Asia/Tokyo
       fallback_to_build_date: true
+  - git-authors
+  - git-committers:
+      repository: spo-kissa/docs
+      branch: main
+      token: !ENV ["MKDOCS_GIT_COMMITTERS_APIKEY"]
 
 markdown_extensions:
   - admonition

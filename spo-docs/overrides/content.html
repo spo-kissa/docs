@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  {{ super() }}
+  <div class="md-typeset" style="margin-top:2rem; border-top:1px solid #ddd; padding-top:.75rem">
+    <h4>DEBUG: page.meta keys</h4>
+    <ul>
+      {% for k, v in (page.meta or {}).items() %}
+        <li><strong>{{ k }}</strong>: {{ v }}</li>
+      {% endfor %}
+    </ul>
+
+    {# 推定されるキー名を総当たりで確認 #}
+    {% set committers = page.meta.git_committers
+                        or page.meta.git_contributors
+                        or page.meta.committers
+                        or page.meta.contributors
+                        or [] %}
+    <p><strong>committers length:</strong> {{ committers|length }}</p>
+
+    {% if committers and committers|length > 0 %}
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;align-items:center">
+        {% for c in committers %}
+          {% set url = c.url or c.web_url or c.html_url %}
+          {% set avatar = c.avatar or c.avatar_url %}
+          {% set name = c.name or c.login or c.username or c.user %}
+          <a href="{{ url or '#' }}" title="{{ name }}" style="text-decoration:none">
+            {% if avatar %}
+              <img src="{{ avatar }}" alt="{{ name }}" width="28" height="28" style="border-radius:50%;vertical-align:middle">
+            {% else %}
+              <span style="display:inline-block;border:1px solid #ccc;border-radius:50%;width:28px;height:28px;text-align:center;line-height:28px;font-size:.75rem">{{ (name or '?')[:1]|upper }}</span>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p><em>No committers payload found.</em></p>
+    {% endif %}
+  </div>
+{% endblock %}

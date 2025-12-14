@@ -150,9 +150,6 @@ sudo service sshd reload
 
 ```bash
 SSH_PORT=`grep "Port" /etc/ssh/sshd_config | sed -e 's/[^0-9]//g'`
-```
-
-```bash
 echo "SSHのポート番号は ${SSH_PORT} です"
 ```
 
@@ -202,7 +199,13 @@ sudo dpkg-reconfigure --priority=low unattended-upgrades
 sudo apt install fail2ban -y
 ```
 
-### 6-2. 設定ファイルを作成する
+### 6-2. SSHのポート番号
+```bash
+SSH_PORT=`grep "Port" /etc/ssh/sshd_config | sed -e 's/[^0-9]//g'`
+echo "SSHのポート番号は ${SSH_PORT} です"
+```
+
+### 6-3. 設定ファイルを作成する
 ```bash
 sudo tee /etc/fail2ban/jail.local <<EOF >/dev/null
 [sshd]

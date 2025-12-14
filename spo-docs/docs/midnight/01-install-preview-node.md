@@ -24,7 +24,7 @@ sudo apt update -y && sudo apt upgrade -y
 
 依存するパッケージをインストール
 ```bash
-sudo apt install git jq bc automake tmux rsync htop curl -y
+sudo apt install git jq bc tmux htop curl -y
 ```
 <!--
 ```bash
@@ -500,15 +500,9 @@ journalctl --unit cardano-node -f
 ```
 
 
-### glive で起動を確認する
-```bash
-glive
-```
-
-
 ## Guild LiveView
 
-### 
+### glive のインストール
 ```bash
 mkdir $NODE_HOME/scripts
 cd $NODE_HOME/scripts
@@ -541,10 +535,18 @@ sed -i $NODE_HOME/scripts/env \
     -e '1,73s!#CNODE_PORT=6000!CNODE_PORT='${b_PORT}'!' \
     -e '1,73s!#UPDATE_CHECK="Y"!UPDATE_CHECK="N"!' \
     -e '1,73s!#CONFIG="${CNODE_HOME}/files/config.json"!CONFIG="${CNODE_HOME}/'${NODE_CONFIG}'-config.json"!' \
-    -e '1,73s!#SOCKET="${CNODE_HOME}/sockets/node.socket"!SOCKET="${CNODE_HOME}/db/socket"!'
+    -e '1,73s!#SOCKET="${CNODE_HOME}/sockets/node.socket"!SOCKET="${CNODE_HOME}/db/socket"!' \
+    -e '1,73s!#PROM_HOST=127.0.0.1!PROM_HOST=127.0.0.1!' \
+    -e '1,73s!#PROM_PORT=12798!PROM_PORT=12798!'
 ```
 
 ```bash
 echo alias glive="'cd $NODE_HOME/scripts; ./gLiveView.sh'" >> $HOME/.bashrc
 source $HOME/.bashrc
 ```
+
+### glive でノードの起動状態を確認する
+```bash
+glive
+```
+
