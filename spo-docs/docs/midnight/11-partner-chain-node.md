@@ -17,7 +17,7 @@ sudo apt-get update
 
 ### 1-2. 必要なパッケージをインストール
 ```bash
-sudo apt-get install ca-certificates curl jq
+sudo NEEDRESTART_MODE=a apt-get install ca-certificates curl jq
 ```
 
 ### 1-3. keyringsディレクトリをセットアップ
@@ -50,13 +50,13 @@ sudo apt-get update
 
 ### 1-8. Dockerの最新版をインストール
 ```bash
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo NEEDRESTART_MODE=a apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
 ```
 
 
 ## 2. Docker を rootless モードで動作させる
 
-### 2-1. システムサービスを無効化する
+### 2-1. システムサービスを停止・無効化する
 ```bash
 sudo systemctl disable --now docker.service docker.socket
 ```
@@ -68,7 +68,7 @@ sudo rm /var/run/docker.sock
 
 ### 2-3. uidmapパッケージをインストール
 ```bash
-sudo apt install uidmap -y
+sudo NEEDRESTART_MODE=a apt install uidmap -y
 ```
 
 ### 2-4. セットアップスクリプトを起動
@@ -95,7 +95,7 @@ loginctl enable-linger "$USER"
 
 ### 3-1. direnvパッケージをインストール
 ```bash
-sudo apt install direnv -y
+sudo NEEDRESTART_MODE=a apt-get -qq -y install direnv
 ```
 
 
