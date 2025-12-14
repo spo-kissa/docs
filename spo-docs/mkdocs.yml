@@ -91,11 +91,11 @@ plugins:
       locale: ja
       timezone: Asia/Tokyo
       fallback_to_build_date: true
-  - git-authors
-  - git-committers:
-      repository: spo-kissa/docs
-      branch: main
-      token: !ENV ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+  # - git-authors
+  # - git-committers:
+  #     repository: spo-kissa/docs
+  #     branch: main
+  #     token: !ENV ["MKDOCS_GIT_COMMITTERS_APIKEY"]
 
 markdown_extensions:
   - admonition
