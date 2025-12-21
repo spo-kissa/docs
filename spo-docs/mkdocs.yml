@@ -65,6 +65,7 @@ theme:
   icon:
     repo: fontawesome/brands/github
   features:
+    - announce.dismiss
     - content.tabs.link
     - content.code.copy
     - content.code.select
@@ -130,6 +131,8 @@ extra:
       lang: en
   homepage: https://spo-kissa.org
   generator: false
+  announce:
+    dismiss: false
 site_name: SPO-Kissa Documentation
 docs_dir: docs
 site_url: https://spo-kissa.org
